@@ -1,10 +1,8 @@
-var { existsSync } = require("fs");
-
+var { existsSync,statSync ,readdirSync} = require("fs");
 var http = require("http");
 var express = require("express");
 var app = express();
 var path = require("path");
-
 var serverPath = process.argv[2] || "E:/web/jslinux/bellard/bellard.org/";
 serverPath = path.join(serverPath);
 
@@ -18,17 +16,32 @@ app.get("*", function(req, res) {
   var p = path.join(serverPath, req.path);
   if (p.includes(serverPath)) {
     if (existsSync(p)) {
-      console.log(p);
-      return res.sendfile(p);
+      var pStat=statSync(p);
+       if(pStat.isFile())
+      return res.sendfile(p)
+      else if(pStat.isDirectory()){
+       return res.send(list(p,req.path))  
+      }
     }
     var back = [".html", ".js", ".css"];
     for (let i = 0; i < back.length; i++) {
       if (existsSync(p + back[i])) {
         console.log(p + back[i]);
+        if(statSync(p + back[i]).isFile())
         return res.sendfile(p + back[i]);
       }
     }
+    res.send("disable");
   } else {
     res.send("disable");
   }
 });
+/**
+ * 
+ * @param {*} dir 
+ */
+function list(dir,baseUrl) {
+  return readdirSync(dir).map(function (params) {
+    return `<a href="${baseUrl+params}">${params}</a><br>`
+  }).join("")
+}
