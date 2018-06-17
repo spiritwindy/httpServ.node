@@ -31,8 +31,10 @@ app.get("*", function(req, res) {
         return res.sendfile(p + back[i]);
       }
     }
+    res.status(500);
     res.send("disable");
   } else {
+    res.status(500);
     res.send("disable");
   }
 });

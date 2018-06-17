@@ -1,2 +1,2 @@
 @echo off
-node E:\web\expressServer\server1  %1
+node --inspect E:\web\expressServer\server1  %1
