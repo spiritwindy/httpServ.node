@@ -1,0 +1,4 @@
+./server E:\KU\JSKU\Geometry
+devtool server1 E:\KU\JSKU\Geometry
+
+server E:\web\loadFlash\
